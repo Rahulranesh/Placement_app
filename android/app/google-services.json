@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "468203088744",
+    "firebase_url": "https://placementapp-cf5dc-default-rtdb.firebaseio.com",
+    "project_id": "placementapp-cf5dc",
+    "storage_bucket": "placementapp-cf5dc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468203088744:android:4873bb140389e5dc74c4dd",
+        "android_client_info": {
+          "package_name": "com.example.place"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8WC-eM7QkD_wjnlozE8_L9skJBoenPv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
