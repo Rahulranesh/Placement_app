@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
+import 'package:place/utils/global.dart';
+
 
 class QNPapersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Fetch previous year Q/N papers from Firestore.
     return FutureBuilder(
-      future: DatabaseService().getQNPapers(),
+      future: DatabaseService().getQNPapers(department: currentDepartment),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         if (snapshot.hasError)
-          return Center(child: Text('Error fetching Q/N papers data'));
+          return const Center(child: Text('Error fetching Q/N papers'));
         final papers = snapshot.data as List;
         return ListView.builder(
           itemCount: papers.length,
           itemBuilder: (context, index) {
             var paper = papers[index];
             return Card(
-              margin: EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(paper['subject'] ?? ''),
                 subtitle: Text('Year: ${paper['year'] ?? ''}'),
                 onTap: () {
-                  // Optionally, implement a detailed view or download functionality.
+                  // Optionally, open paper URL.
                 },
               ),
             );

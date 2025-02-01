@@ -13,12 +13,12 @@ class StudentHomeScreen extends StatefulWidget {
 class _StudentHomeScreenState extends State<StudentHomeScreen> {
   int _selectedIndex = 0;
 
-  static List<Widget> _widgetOptions = <Widget>[
+  static  List<Widget> _widgetOptions = <Widget>[
     StaffsScreen(),
     ExamsScreen(),
     QNPapersScreen(),
     PlacementPreparationScreen(),
-    CampusMap(), // Campus map feature available to all users.
+    CampusMap(), // Shared campus map.
   ];
 
   void _onItemTapped(int index) {
@@ -26,13 +26,11 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
       _selectedIndex = index;
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Placement App'),
-      ),
+      appBar: AppBar(title: const Text('Placement App')),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

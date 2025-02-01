@@ -7,7 +7,7 @@ import 'package:place/utils/button.dart';
 import 'package:place/utils/textfield.dart';
 import 'register_screen.dart';
 import 'student_home_screen.dart';
-import 'admin_home_screen.dart';
+import '../admin/admin_home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
