@@ -1,10 +1,16 @@
+// admin_home_screen.dart
 import 'package:flutter/material.dart';
+import 'package:place/admin/admin_upload_exams_screen.dart';
 import 'package:place/admin/admin_upload_placement_info_screen.dart';
-import 'package:place/admin/admin_upload_qnpeprs_screen.dart'; // Verify the filename and class name!
+import 'package:place/admin/admin_upload_placement_screen.dart';
+
+import 'package:place/admin/admin_upload_qnpeprs_screen.dart';
+import 'package:place/admin/admin_upload_staff_screen.dart';
 import 'package:place/screen/campus_map.dart';
-import 'admin_upload_staff_screen.dart';
-import 'admin_upload_exams_screen.dart';
-import 'admin_upload_placement_screen.dart';
+
+import 'package:place/utils/custom_appbar.dart';
+import 'package:place/utils/custom_bottom_nav_bar.dart';
+import 'package:place/utils/neumorphic_widget.dart';
 
 class AdminHomeScreen extends StatefulWidget {
   @override
@@ -13,8 +19,6 @@ class AdminHomeScreen extends StatefulWidget {
 
 class _AdminHomeScreenState extends State<AdminHomeScreen> {
   int _selectedIndex = 0;
-
-  // Ensure there are exactly 6 titles (one for each tab).
   static const List<String> _titles = <String>[
     'Manage Staffs',
     'Manage Exams',
@@ -23,8 +27,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     'Manage Placement Info',
     'Campus Map',
   ];
-
-  // Ensure these widgets are defined in the imported files and have callable constructors.
   final List<Widget> _widgetOptions = [
     AdminUploadStaffScreen(),
     AdminUploadExamsScreen(),
@@ -67,60 +69,41 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => AdminUploadPlacementInfoScreen(
-                    uploadOnly: true,
-                  )));
+              builder: (context) =>
+                  AdminUploadPlacementInfoScreen(uploadOnly: true)));
     }
-    // No upload action for Campus Map (index 5)
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_titles[_selectedIndex]),
-      ),
+      appBar: CustomAppBar(title: _titles[_selectedIndex]),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: _widgetOptions[_selectedIndex],
+        padding: EdgeInsets.all(16),
+        child: NeumorphicContainer(
+          padding: EdgeInsets.all(16),
+          child: _widgetOptions[_selectedIndex],
+        ),
       ),
-      // FloatingActionButton is shown for indices 0-4 (uploadable screens)
       floatingActionButton: _selectedIndex < 5
           ? FloatingActionButton(
               onPressed: _onAddPressed,
-              child: const Icon(Icons.add),
+              child: Icon(Icons.add),
             )
           : null,
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.edit),
-            label: 'Staffs',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event),
-            label: 'Exams',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Q/N Papers',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Placement Mat.',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Placement info.',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Campus Map',
-          ),
-        ],
+      bottomNavigationBar: CustomBottomNavBar(
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'Staffs'),
+          BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Exams'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Q/N Papers'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.school), label: 'Placement Mat.'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.school), label: 'Placement Info'),
+          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Campus Map'),
+        ],
       ),
     );
   }

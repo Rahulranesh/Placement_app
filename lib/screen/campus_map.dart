@@ -1,5 +1,8 @@
+// campus_map.dart
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'package:place/utils/custom_appbar.dart';
 
 class CampusMap extends StatefulWidget {
   @override
@@ -8,23 +11,20 @@ class CampusMap extends StatefulWidget {
 
 class _CampusMapState extends State<CampusMap> {
   GoogleMapController? _controller;
-
-  // Set initial camera position to your college’s location.
   static final CameraPosition _initialPosition = CameraPosition(
-    target: LatLng(18.5204,
-        73.8567), // Example coordinates – update with your college's coordinates.
+    target: LatLng(18.5204, 73.8567),
     zoom: 16,
   );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(title: 'Campus Map'),
       body: GoogleMap(
         initialCameraPosition: _initialPosition,
         onMapCreated: (GoogleMapController controller) {
           _controller = controller;
         },
-        // Enable user gestures to move the camera.
         myLocationEnabled: true,
         zoomControlsEnabled: true,
       ),

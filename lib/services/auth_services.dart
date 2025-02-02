@@ -1,3 +1,4 @@
+// auth_services.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -21,7 +22,6 @@ class AuthService {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: username, password: password);
-
       if (result.user != null) {
         await _firestore.collection("users").doc(result.user!.uid).set({
           "name": name,

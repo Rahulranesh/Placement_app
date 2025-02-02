@@ -1,9 +1,9 @@
+// profile_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:place/utils/container.dart';
-import 'package:place/utils/button.dart';
-import 'package:place/utils/textfield.dart';
+import 'package:place/utils/neumorphic_widget.dart';
+import 'package:place/utils/custom_appbar.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -14,7 +14,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   String name = '', department = '';
 
-  // Fetch current user data to prefill the form.
   Future<void> _fetchProfile() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -31,7 +30,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  // Update profile data.
   Future<void> _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -59,52 +57,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Check if dark mode is active.
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    // Set container and text colors based on theme.
     Color containerColor = isDark ? Colors.grey[850]! : Colors.grey[300]!;
-    Color textColor = isDark ? Colors.white : Colors.black;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Update Profile'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: NeumorphicContainer(
-          color: containerColor,
-          borderRadius: BorderRadius.circular(20),
-          padding: EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                // Use the neumorphicTextField as before.
-                // You can also update the custom widget to support text styling.
-                neumorphicTextField(
-                  label: "Name",
-                  onSaved: (value) => name = value,
-                ),
-                SizedBox(height: 15),
-                neumorphicTextField(
-                  label: "Department",
-                  onSaved: (value) => department = value,
-                ),
-                SizedBox(height: 20),
-                neumorphicButton(
-                  onPressed: _updateProfile,
-                  child: Center(
-                    child: Text(
-                      'Update Profile',
-                      style: TextStyle(
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
+      appBar: CustomAppBar(title: 'Update Profile'),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(16),
+          child: NeumorphicContainer(
+            color: containerColor,
+            padding: EdgeInsets.all(20),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  NeumorphicTextField(
+                    label: "Name",
+                    onSaved: (value) => name = value,
                   ),
-                ),
-              ],
+                  SizedBox(height: 15),
+                  NeumorphicTextField(
+                    label: "Department",
+                    onSaved: (value) => department = value,
+                  ),
+                  SizedBox(height: 20),
+                  neumorphicButton(
+                      onPressed: _updateProfile,
+                      child: Center(
+                          child: Text('Update Profile',
+                              style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16)))),
+                ],
+              ),
             ),
           ),
         ),
