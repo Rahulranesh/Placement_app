@@ -1,4 +1,3 @@
-// qnpapers_screen.dart
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
 import 'package:place/utils/neumorphic_widget.dart';

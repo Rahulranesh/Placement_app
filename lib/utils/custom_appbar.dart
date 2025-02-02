@@ -1,4 +1,3 @@
-// custom_app_bar.dart
 import 'package:flutter/material.dart';
 import 'package:place/screen/chat_screen.dart';
 

@@ -1,4 +1,3 @@
-// student_home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:place/screen/staffs_screen.dart';
 import 'package:place/screen/exams_screen.dart';
@@ -28,7 +27,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     ExamsScreen(),
     QNPapersScreen(),
     PlacementPreparationScreen(),
-    CampusMap(),
   ];
 
   void _onItemTapped(int index) {

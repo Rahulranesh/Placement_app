@@ -1,13 +1,10 @@
-// admin_home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:place/admin/admin_upload_exams_screen.dart';
 import 'package:place/admin/admin_upload_placement_info_screen.dart';
 import 'package:place/admin/admin_upload_placement_screen.dart';
-
 import 'package:place/admin/admin_upload_qnpeprs_screen.dart';
 import 'package:place/admin/admin_upload_staff_screen.dart';
 import 'package:place/screen/campus_map.dart';
-
 import 'package:place/utils/custom_appbar.dart';
 import 'package:place/utils/custom_bottom_nav_bar.dart';
 import 'package:place/utils/neumorphic_widget.dart';
@@ -33,7 +30,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     AdminUploadQNPapersScreen(),
     AdminUploadPlacementScreen(),
     AdminUploadPlacementInfoScreen(),
-    CampusMap(),
   ];
 
   void _onItemTapped(int index) {

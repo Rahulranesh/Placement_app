@@ -1,4 +1,3 @@
-// splash_screen.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:place/screen/login_screen.dart';

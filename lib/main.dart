@@ -1,4 +1,3 @@
-// main.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:place/screen/login_screen.dart';
@@ -44,9 +43,9 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData(
             brightness: Brightness.dark,
             primarySwatch: Colors.blueGrey,
-            scaffoldBackgroundColor: Colors.grey[900],
+            scaffoldBackgroundColor: Colors.black,
             appBarTheme: AppBarTheme(
-              backgroundColor: Colors.grey[850],
+              backgroundColor: Colors.black,
               elevation: 0,
               iconTheme: IconThemeData(color: Colors.white),
               titleTextStyle: TextStyle(

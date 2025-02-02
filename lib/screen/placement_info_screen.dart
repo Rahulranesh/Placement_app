@@ -1,4 +1,3 @@
-// placement_info_screen.dart
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:place/services/database_services.dart';
@@ -31,8 +30,6 @@ class _PlacementInfoScreenState extends State<PlacementInfoScreen> {
       if (placementDate.isAfter(now)) {
         DateTime scheduledTime = DateTime(
             placementDate.year, placementDate.month, placementDate.day, 9, 0);
-
-        idCounter++;
       }
     }
   }

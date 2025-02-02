@@ -190,6 +190,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_google_street_view:
+    dependency: "direct main"
+    description:
+      name: flutter_google_street_view
+      sha256: cf4de8f010df51f3e659f93bcc4288054aa6f2d3b55ff7e191eb63fd291766e9
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -493,6 +501,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  street_view_platform_interface:
+    dependency: transitive
+    description:
+      name: street_view_platform_interface
+      sha256: "71d5ad0e5656b0e925e13a1a906cf54d6b4d5f2d83c9b3d1ca52128c17d66115"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
   string_scanner:
     dependency: transitive
     description:

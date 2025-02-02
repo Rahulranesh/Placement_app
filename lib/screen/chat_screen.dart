@@ -1,4 +1,3 @@
-// chat_screen.dart
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +20,8 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<ChatMessage> _messages = [];
   final TextEditingController _controller = TextEditingController();
   bool _isLoading = false;
-  final String apiKey = "YOUR_API_KEY";
+  final String apiKey =
+      "k-proj-lX8kEwWLsaXQdEF_GgAvQxFpjK4luz4sv6VmQtT5Amrxvyp0iSYtZJci7xE-sEZhA61xjqiTBPT3BlbkFJhls04iA_BZ695eW9ZjW-2bACMZWNkat1PvtPr5cerAqgT30H2dl_-MY5JqNVx2EPG7fEQi5rMA";
 
   Future<String> fetchAIResponse(String userMessage) async {
     final url = Uri.parse("https://api.openai.com/v1/chat/completions");
