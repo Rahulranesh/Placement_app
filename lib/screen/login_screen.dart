@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-
 import 'package:place/services/auth_services.dart';
 import 'package:place/utils/container.dart';
 import 'package:place/utils/button.dart';
-
 import 'package:place/utils/textfield.dart';
 import 'register_screen.dart';
 import 'student_home_screen.dart';
 import '../admin/admin_home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  final ValueNotifier<bool>? themeNotifier; // New parameter
+
+  // Updated constructor that accepts themeNotifier.
+  LoginScreen({Key? key, this.themeNotifier}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -21,9 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Base color for neumorphic style
     final Color baseColor = Colors.grey[300]!;
-
     return Scaffold(
       backgroundColor: baseColor,
       body: Center(
@@ -40,11 +41,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       'Login',
-                      style:
-                          TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 20),
-                    // Role selection using custom neumorphic radio buttons
+                    // Role selection using custom neumorphic radio buttons.
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -86,14 +89,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     neumorphicButton(
                       onPressed: _login,
                       child: Center(
-                          child: Text('Login', style: TextStyle(fontSize: 18))),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
                     ),
                     SizedBox(height: 15),
                     TextButton(
                       onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterScreen())),
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterScreen()),
+                      ),
                       child: Text("Don't have an account? Register"),
                     ),
                   ],
@@ -114,8 +122,9 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                isAdmin ? AdminHomeScreen() : StudentHomeScreen(),
+            builder: (context) => isAdmin
+                ? AdminHomeScreen()
+                : StudentHomeScreen(themeNotifier: widget.themeNotifier),
           ),
         );
       } else {
@@ -123,69 +132,5 @@ class _LoginScreenState extends State<LoginScreen> {
             .showSnackBar(SnackBar(content: Text('Login failed')));
       }
     }
-  }
-}
-
-class NeumorphicRadio<T> extends StatelessWidget {
-  final T value;
-  final T groupValue;
-  final ValueChanged<T?> onChanged;
-  final String label;
-
-  NeumorphicRadio({
-    required this.value,
-    required this.groupValue,
-    required this.onChanged,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    bool selected = value == groupValue;
-    Color baseColor = Colors.grey[300]!;
-    return GestureDetector(
-      onTap: () {
-        onChanged(value);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: baseColor,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: selected
-              ? [
-                  // For selected state, use a shallower shadow for a pressed look.
-                  BoxShadow(
-                    color: Colors.grey[500]!,
-                    offset: Offset(2, 2),
-                    blurRadius: 5,
-                    spreadRadius: 1,
-                  ),
-                  BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(-2, -2),
-                    blurRadius: 5,
-                    spreadRadius: 1,
-                  ),
-                ]
-              : [
-                  // For unselected state, use deeper shadows.
-                  BoxShadow(
-                    color: Colors.grey[500]!,
-                    offset: Offset(4, 4),
-                    blurRadius: 15,
-                    spreadRadius: 1,
-                  ),
-                  BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(-4, -4),
-                    blurRadius: 15,
-                    spreadRadius: 1,
-                  ),
-                ],
-        ),
-        padding: EdgeInsets.all(8.0),
-        child: Text(label, style: TextStyle(fontSize: 16)),
-      ),
-    );
   }
 }

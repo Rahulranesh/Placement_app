@@ -9,16 +9,32 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  // Global theme notifier to allow dark mode toggle.
+  final ValueNotifier<bool> isDarkMode = ValueNotifier(false);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Placement App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        // Customize further to follow Mitch Koko’s modern style.
-      ),
-      home: LoginScreen(),
+    return ValueListenableBuilder<bool>(
+      valueListenable: isDarkMode,
+      builder: (context, darkMode, child) {
+        return MaterialApp(
+          title: 'Placement App',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            brightness: Brightness.light,
+            primarySwatch: Colors.blue,
+            scaffoldBackgroundColor: Colors.grey[300],
+          ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            primarySwatch: Colors.blue,
+            scaffoldBackgroundColor: Colors.grey[850],
+          ),
+          themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+          // Pass the theme notifier to LoginScreen.
+          home: LoginScreen(themeNotifier: isDarkMode),
+        );
+      },
     );
   }
 }

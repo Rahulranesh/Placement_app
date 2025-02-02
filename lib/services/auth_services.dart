@@ -5,10 +5,8 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Login method.
   Future<bool> login(String username, String password, bool isAdmin) async {
     try {
-      // Here, 'username' is assumed to be an email address.
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: username, password: password);
       return result.user != null;
@@ -18,9 +16,6 @@ class AuthService {
     }
   }
 
-  // Registration method.
-
-  // Registration method with Firestore integration
   Future<bool> register(String name, String department, String username,
       String password, bool isAdmin) async {
     try {
@@ -28,7 +23,6 @@ class AuthService {
           email: username, password: password);
 
       if (result.user != null) {
-        // Save user data to Firestore
         await _firestore.collection("users").doc(result.user!.uid).set({
           "name": name,
           "department": department,
@@ -43,5 +37,9 @@ class AuthService {
       print('Registration Error: $e');
       return false;
     }
+  }
+
+  Future<void> logout() async {
+    await _auth.signOut();
   }
 }

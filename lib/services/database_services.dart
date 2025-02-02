@@ -145,4 +145,35 @@ class DatabaseService {
       throw Exception("Error adding placement material: $e");
     }
   }
+
+  Future<void> addPlacementInfo(
+      {required Map<String, dynamic> infoData}) async {
+    String dept = await getUserDepartment();
+    try {
+      await _db
+          .collection('departments')
+          .doc(dept)
+          .collection('placement_info')
+          .add(infoData);
+    } catch (e) {
+      throw Exception("Error adding placement info: $e");
+    }
+  }
+
+  // Retrieve Placement Information (for student use)
+  Future<List<Map<String, dynamic>>> getPlacementInfo() async {
+    String dept = await getUserDepartment();
+    try {
+      QuerySnapshot snapshot = await _db
+          .collection('departments')
+          .doc(dept)
+          .collection('placement_info')
+          .get();
+      return snapshot.docs
+          .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+          .toList();
+    } catch (e) {
+      throw Exception("Error fetching placement info: $e");
+    }
+  }
 }
