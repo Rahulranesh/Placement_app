@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
-import 'package:place/utils/global.dart';
+
 class ExamsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: DatabaseService().getExams(department: currentDepartment),
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: DatabaseService().getExams(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        if (snapshot.hasError)
-          return const Center(child: Text('Error fetching exams data'));
-        final exams = snapshot.data as List;
+        }
+        if (snapshot.hasError) {
+          return Center(
+              child: Text('Error fetching exams data: ${snapshot.error}'));
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No exams found.'));
+        }
+        final exams = snapshot.data!;
         return ListView.builder(
           itemCount: exams.length,
           itemBuilder: (context, index) {

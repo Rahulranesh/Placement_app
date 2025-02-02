@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
-import 'package:place/utils/global.dart';
-
 
 class QNPapersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: DatabaseService().getQNPapers(department: currentDepartment),
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: DatabaseService().getQNPapers(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        if (snapshot.hasError)
-          return const Center(child: Text('Error fetching Q/N papers'));
-        final papers = snapshot.data as List;
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error fetching Q/N papers: ${snapshot.error}'),
+          );
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No Q/N papers found.'));
+        }
+        final papers = snapshot.data!;
         return ListView.builder(
           itemCount: papers.length,
           itemBuilder: (context, index) {
@@ -24,7 +29,7 @@ class QNPapersScreen extends StatelessWidget {
                 title: Text(paper['subject'] ?? ''),
                 subtitle: Text('Year: ${paper['year'] ?? ''}'),
                 onTap: () {
-                  // Optionally, open paper URL.
+                  // Optionally, open paper URL or navigate to a detailed view.
                 },
               ),
             );
