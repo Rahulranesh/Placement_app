@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:place/services/database_services.dart';
-import 'package:place/services/storage_service.dart';
+import 'package:place/services/subabase_storage_service.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -19,7 +20,7 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
   final _formKey = GlobalKey<FormState>();
   String title = '';
   String date = '';
-  String? examImageUrl; // Optional exam image.
+  String? examImageUrl;
   bool _isUploadingImage = false;
 
   Future<void> _pickAndUploadImage() async {
@@ -31,8 +32,9 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
         _isUploadingImage = true;
       });
       try {
-        String url = await StorageService()
-            .uploadFile(file, 'exams/${DateTime.now().millisecondsSinceEpoch}');
+        // Upload file using SupabaseStorageService. The file name will include the Firebase UID.
+        String url = await SupabaseStorageService()
+            .uploadFile(file, 'exams', extension: ".jpg");
         setState(() {
           examImageUrl = url;
         });
@@ -49,9 +51,11 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
   Future<void> _uploadExam() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      // Prepare exam data, including tracking the uploader’s Firebase UID.
       Map<String, dynamic> examData = {
         'title': title,
         'date': date,
+        'uploadedBy': FirebaseAuth.instance.currentUser?.uid,
       };
       if (examImageUrl != null) {
         examData['examImageUrl'] = examImageUrl;
@@ -95,9 +99,11 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
                     Row(
                       children: [
                         Expanded(
-                          child: Text(examImageUrl == null
-                              ? "No exam image selected"
-                              : "Exam image uploaded"),
+                          child: Text(
+                            examImageUrl == null
+                                ? "No exam image selected"
+                                : "Exam image uploaded",
+                          ),
                         ),
                         _isUploadingImage
                             ? CircularProgressIndicator()
@@ -147,8 +153,9 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
                         ? IconButton(
                             icon: Icon(Icons.download),
                             onPressed: () {
-                              print(
-                                  "Download exam image from: ${exam['examImageUrl']}");
+                              // To download, use the URL launcher to open the public URL.
+                              // For example:
+                              // await launchUrl(Uri.parse(exam['examImageUrl']));
                             },
                           )
                         : null,
