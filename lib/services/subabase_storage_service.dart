@@ -6,7 +6,6 @@ class SupabaseStorageService {
   final SupabaseClient client = Supabase.instance.client;
 
   /// Uploads a file to the Supabase bucket named 'uploads'.
-<<<<<<< HEAD
   /// The [prefix] distinguishes file types (e.g., 'staff_image', 'qn_paper', 'placement_material').
   /// The [extension] must include the leading dot (e.g., ".jpg", ".pdf").
   Future<String> uploadFile(File file, String prefix,
@@ -52,21 +51,6 @@ class SupabaseStorageService {
       return publicURL;
     } catch (e) {
       throw Exception("Error during file upload: $e");
-=======
-  /// [pathPrefix] distinguishes file types (e.g., 'staff_image', 'qn_paper', 'placement_material').
-  /// [extension] should include the leading dot (e.g., ".jpg", ".pdf").
-  Future<String> uploadFile(File file, String pathPrefix,
-      {String extension = ".jpg"}) async {
-    final fileName =
-        '$pathPrefix_${DateTime.now().millisecondsSinceEpoch}$extension';
-    final fileBytes = await file.readAsBytes();
-    final response = await client.storage.from('uploads').uploadBinary(
-          fileName,
-          fileBytes,
-        );
-    if (response.error != null) {
-      throw Exception('File upload failed: ${response.error!.message}');
->>>>>>> ffe1626e32d9e8b5423444e786f6984724fbfb96
     }
   }
 }

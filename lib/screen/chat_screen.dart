@@ -72,22 +72,25 @@ class _ChatScreenState extends State<ChatScreen> {
     } catch (e) {
       setState(() {
         _messages.add(ChatMessage(
-            text: "Error: Unable to get response. Please try again.",
-            isUser: false));
+            text: "Error: Unable to get response. Please try again.", isUser: false));
         _isLoading = false;
       });
     }
   }
 
   Widget _buildMessage(ChatMessage message) {
+    // Set bubble colors based on message source.
+    final bubbleColor = message.isUser ? Colors.blueAccent[100] : Colors.grey[300];
+    final textColor = message.isUser ? Colors.white : Colors.black;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 20.0),
       child: Align(
-        alignment:
-            message.isUser ? Alignment.centerRight : Alignment.centerLeft,
+        alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
         child: NeumorphicContainer(
+          color: bubbleColor,
+          borderRadius: BorderRadius.circular(16),
           padding: EdgeInsets.all(12),
-          child: Text(message.text, style: TextStyle(fontSize: 16)),
+          child: Text(message.text, style: TextStyle(fontSize: 16, color: textColor)),
         ),
       ),
     );
@@ -103,9 +106,14 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Expanded(
             child: ListView.builder(
+              reverse: true,
               padding: EdgeInsets.only(top: 10),
               itemCount: _messages.length,
-              itemBuilder: (context, index) => _buildMessage(_messages[index]),
+              itemBuilder: (context, index) {
+                // Because the list is reversed, we display messages from the end.
+                final message = _messages[_messages.length - 1 - index];
+                return _buildMessage(message);
+              },
             ),
           ),
           if (_isLoading)
@@ -121,11 +129,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: NeumorphicTextField(
                     label: "Enter your question...",
                     onSaved: (value) {},
+                    controller: _controller,
                   ),
                 ),
                 SizedBox(width: 10),
                 neumorphicButton(
-                    onPressed: _sendMessage, child: Icon(Icons.send)),
+                  onPressed: _sendMessage,
+                  child: Icon(Icons.send),
+                ),
               ],
             ),
           ),

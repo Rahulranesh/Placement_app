@@ -6,8 +6,12 @@ class NeumorphicContainer extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Color? color;
 
-  NeumorphicContainer(
-      {required this.child, this.borderRadius, this.padding, this.color});
+  NeumorphicContainer({
+    required this.child,
+    this.borderRadius,
+    this.padding,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +62,15 @@ class NeumorphicTextField extends StatelessWidget {
   final Function(String) onSaved;
   final bool obscureText;
   final FormFieldValidator<String>? validator;
+  final TextEditingController? controller;
 
-  NeumorphicTextField(
-      {required this.label,
-      required this.onSaved,
-      this.obscureText = false,
-      this.validator});
+  NeumorphicTextField({
+    required this.label,
+    required this.onSaved,
+    this.obscureText = false,
+    this.validator,
+    this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -71,21 +78,20 @@ class NeumorphicTextField extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
       child: TextFormField(
+        controller: controller,
         decoration: InputDecoration(
           hintText: label,
           border: InputBorder.none,
         ),
         obscureText: obscureText,
         onSaved: (value) => onSaved(value!),
-        validator:
-            validator ?? (value) => value!.isEmpty ? 'Enter $label' : null,
+        validator: validator ?? (value) => value!.isEmpty ? 'Enter $label' : null,
       ),
     );
   }
 }
 
-Widget neumorphicButton(
-    {required VoidCallback onPressed, required Widget child}) {
+Widget neumorphicButton({required VoidCallback onPressed, required Widget child}) {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -104,11 +110,12 @@ class NeumorphicRadio<T> extends StatelessWidget {
   final ValueChanged<T?> onChanged;
   final String label;
 
-  NeumorphicRadio(
-      {required this.value,
-      required this.groupValue,
-      required this.onChanged,
-      required this.label});
+  NeumorphicRadio({
+    required this.value,
+    required this.groupValue,
+    required this.onChanged,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {

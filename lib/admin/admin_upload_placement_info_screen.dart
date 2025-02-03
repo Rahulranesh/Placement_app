@@ -62,7 +62,7 @@ class _AdminUploadPlacementInfoScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Upload Placement Info'),
+      appBar: CustomAppBar(title: 'Upload Placement Info',showNotificationButton: true,),
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20),

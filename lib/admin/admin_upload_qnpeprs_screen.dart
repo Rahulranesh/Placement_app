@@ -74,7 +74,7 @@ class _AdminUploadQNPapersScreenState extends State<AdminUploadQNPapersScreen> {
   Widget build(BuildContext context) {
     if (widget.uploadOnly) {
       return Scaffold(
-        appBar: CustomAppBar(title: 'Upload Q/N Paper'),
+        appBar: CustomAppBar(title: 'Upload Q/N Paper',showNotificationButton: true,),
         body: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(20),

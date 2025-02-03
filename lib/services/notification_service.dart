@@ -1,51 +1,32 @@
-/*import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest_all.dart' as tz;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class NotificationService {
-  static final NotificationService _instance = NotificationService._internal();
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // Replace with your actual FCM server key.
+  static const String serverKey = "YOUR_SERVER_KEY_HERE";
 
-  factory NotificationService() => _instance;
-  NotificationService._internal();
+  /// Sends a notification to a given topic (e.g., "students")
+  Future<void> sendNotificationToTopic(String topic, String title, String body) async {
+    final url = Uri.parse("https://fcm.googleapis.com/fcm/send");
+    final headers = {
+      "Content-Type": "application/json",
+      "Authorization": "key=$serverKey",
+    };
 
-  Future<void> initNotification() async {
-    tz.initializeTimeZones();
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
-    const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    final payload = {
+      "to": "/topics/$topic",
+      "notification": {
+        "title": title,
+        "body": body,
+      },
+      "data": {
+        "click_action": "FLUTTER_NOTIFICATION_CLICK",
+      }
+    };
+
+    final response = await http.post(url, headers: headers, body: json.encode(payload));
+    if (response.statusCode != 200) {
+      throw Exception("Failed to send notification: ${response.body}");
+    }
   }
-
-  Future<void> scheduleNotification({
-    required int id,
-    required String title,
-    required String body,
-    required DateTime scheduledDate,
-  }) async {
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-      'placement_channel',
-      'Placement Notifications',
-      channelDescription: 'Notifications for placement events',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-    const NotificationDetails platformDetails =
-        NotificationDetails(android: androidDetails);
-    tz.TZDateTime tzScheduledDate =
-        tz.TZDateTime.from(scheduledDate, tz.local);
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      tzScheduledDate,
-      platformDetails,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
-  }
-}*/
+}

@@ -76,7 +76,7 @@ class _AdminUploadStaffScreenState extends State<AdminUploadStaffScreen> {
   Widget build(BuildContext context) {
     if (widget.uploadOnly) {
       return Scaffold(
-        appBar: CustomAppBar(title: 'Upload Staff'),
+        appBar: CustomAppBar(title: 'Upload Staff',showNotificationButton: true,),
         body: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(20),

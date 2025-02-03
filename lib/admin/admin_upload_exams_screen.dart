@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:place/services/database_services.dart';
 import 'package:place/services/subabase_storage_service.dart';
-<<<<<<< HEAD
-=======
-
->>>>>>> ffe1626e32d9e8b5423444e786f6984724fbfb96
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -27,6 +23,7 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
   bool _isUploadingImage = false;
 
   Future<void> _pickAndUploadImage() async {
+    // Use FilePicker to select an image.
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
     if (result != null) {
       File file = File(result.files.single.path!);
@@ -34,14 +31,8 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
         _isUploadingImage = true;
       });
       try {
-<<<<<<< HEAD
-        // Upload file using SupabaseStorageService. The file name will include the Firebase UID.
-        String url = await SupabaseStorageService()
-            .uploadFile(file, 'exams', extension: ".jpg");
-=======
-        // Use SupabaseStorageService instead of Firebase Storage
+        // Upload using SupabaseStorageService. This method incorporates the current Firebase UID.
         String url = await SupabaseStorageService().uploadFile(file, 'exams', extension: ".jpg");
->>>>>>> ffe1626e32d9e8b5423444e786f6984724fbfb96
         setState(() {
           examImageUrl = url;
         });
@@ -86,7 +77,7 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
   Widget build(BuildContext context) {
     if (widget.uploadOnly) {
       return Scaffold(
-        appBar: CustomAppBar(title: 'Upload Exam'),
+        appBar: CustomAppBar(title: 'Upload Exam',showNotificationButton: true,),
         body: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(20),
@@ -110,17 +101,15 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
                       children: [
                         Expanded(
                           child: Text(
-                            examImageUrl == null
-                                ? "No exam image selected"
-                                : "Exam image uploaded",
+                            examImageUrl == null ? "No exam image selected" : "Exam image uploaded",
                           ),
                         ),
                         _isUploadingImage
-                            ? CircularProgressIndicator()
-                            : neumorphicButton(
-                                onPressed: _pickAndUploadImage,
-                                child: Text("Upload Image", style: TextStyle(fontSize: 16))
-                              ),
+                          ? CircularProgressIndicator()
+                          : neumorphicButton(
+                              onPressed: _pickAndUploadImage,
+                              child: Text("Upload Image", style: TextStyle(fontSize: 16))
+                            ),
                       ],
                     ),
                     SizedBox(height: 20),
@@ -136,6 +125,7 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
         ),
       );
     } else {
+      // Otherwise, display the list of exams (retrieved from Firestore via DatabaseService).
       return Scaffold(
         appBar: CustomAppBar(title: 'Exams'),
         body: FutureBuilder<List<Map<String, dynamic>>>(
@@ -159,19 +149,15 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
                     title: Text(exam['title'] ?? ''),
                     subtitle: Text('Date: ${exam['date'] ?? ''}'),
                     trailing: exam.containsKey('examImageUrl')
-                        ? IconButton(
-                            icon: Icon(Icons.download),
-                            onPressed: () {
-<<<<<<< HEAD
-                              // To download, use the URL launcher to open the public URL.
-                              // For example:
-                              // await launchUrl(Uri.parse(exam['examImageUrl']));
-=======
-                              print("Download exam image from: ${exam['examImageUrl']}");
->>>>>>> ffe1626e32d9e8b5423444e786f6984724fbfb96
-                            },
-                          )
-                        : null,
+                      ? IconButton(
+                          icon: Icon(Icons.download),
+                          onPressed: () {
+                            // Use url_launcher to open the public URL.
+                            // Example (uncomment when using url_launcher):
+                            // launchUrl(Uri.parse(exam['examImageUrl']));
+                          },
+                        )
+                      : null,
                   ),
                 );
               },

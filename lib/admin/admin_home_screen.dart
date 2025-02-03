@@ -73,7 +73,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: _titles[_selectedIndex]),
+      // Pass showNotificationButton: true for admin screens.
+      appBar: CustomAppBar(title: _titles[_selectedIndex], showNotificationButton: true),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: NeumorphicContainer(

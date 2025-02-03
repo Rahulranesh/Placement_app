@@ -78,7 +78,7 @@ class _AdminUploadPlacementScreenState
   Widget build(BuildContext context) {
     if (widget.uploadOnly) {
       return Scaffold(
-        appBar: CustomAppBar(title: 'Upload Placement Material'),
+        appBar: CustomAppBar(title: 'Upload Placement Material',showNotificationButton: true,),
         body: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(20),
