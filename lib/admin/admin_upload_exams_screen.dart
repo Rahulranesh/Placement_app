@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:place/services/database_services.dart';
 import 'package:place/services/subabase_storage_service.dart';
+<<<<<<< HEAD
+=======
+
+>>>>>>> ffe1626e32d9e8b5423444e786f6984724fbfb96
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
 import 'package:file_picker/file_picker.dart';
 
 class AdminUploadExamsScreen extends StatefulWidget {
   final bool uploadOnly;
-  const AdminUploadExamsScreen({this.uploadOnly = false, Key? key})
-      : super(key: key);
+  const AdminUploadExamsScreen({this.uploadOnly = false, Key? key}) : super(key: key);
 
   @override
   _AdminUploadExamsScreenState createState() => _AdminUploadExamsScreenState();
@@ -24,23 +27,28 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
   bool _isUploadingImage = false;
 
   Future<void> _pickAndUploadImage() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.image);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
     if (result != null) {
       File file = File(result.files.single.path!);
       setState(() {
         _isUploadingImage = true;
       });
       try {
+<<<<<<< HEAD
         // Upload file using SupabaseStorageService. The file name will include the Firebase UID.
         String url = await SupabaseStorageService()
             .uploadFile(file, 'exams', extension: ".jpg");
+=======
+        // Use SupabaseStorageService instead of Firebase Storage
+        String url = await SupabaseStorageService().uploadFile(file, 'exams', extension: ".jpg");
+>>>>>>> ffe1626e32d9e8b5423444e786f6984724fbfb96
         setState(() {
           examImageUrl = url;
         });
       } catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Image upload failed: $e")));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Image upload failed: $e"))
+        );
       }
       setState(() {
         _isUploadingImage = false;
@@ -63,11 +71,13 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
       try {
         await DatabaseService().addExam(examData: examData);
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Exam uploaded successfully!")));
+          SnackBar(content: Text("Exam uploaded successfully!"))
+        );
         Navigator.pop(context);
       } catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Error uploading exam: $e")));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error uploading exam: $e"))
+        );
       }
     }
   }
@@ -109,15 +119,15 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
                             ? CircularProgressIndicator()
                             : neumorphicButton(
                                 onPressed: _pickAndUploadImage,
-                                child: Text("Upload Image",
-                                    style: TextStyle(fontSize: 16))),
+                                child: Text("Upload Image", style: TextStyle(fontSize: 16))
+                              ),
                       ],
                     ),
                     SizedBox(height: 20),
                     neumorphicButton(
-                        onPressed: _uploadExam,
-                        child: Text('Upload Exam',
-                            style: TextStyle(fontSize: 18))),
+                      onPressed: _uploadExam,
+                      child: Text('Upload Exam', style: TextStyle(fontSize: 18))
+                    ),
                   ],
                 ),
               ),
@@ -134,8 +144,7 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
             if (snapshot.connectionState == ConnectionState.waiting)
               return Center(child: CircularProgressIndicator());
             if (snapshot.hasError)
-              return Center(
-                  child: Text('Error fetching exams: ${snapshot.error}'));
+              return Center(child: Text('Error fetching exams: ${snapshot.error}'));
             if (!snapshot.hasData || snapshot.data!.isEmpty)
               return Center(child: Text('No exams found.'));
             final exams = snapshot.data!;
@@ -153,9 +162,13 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
                         ? IconButton(
                             icon: Icon(Icons.download),
                             onPressed: () {
+<<<<<<< HEAD
                               // To download, use the URL launcher to open the public URL.
                               // For example:
                               // await launchUrl(Uri.parse(exam['examImageUrl']));
+=======
+                              print("Download exam image from: ${exam['examImageUrl']}");
+>>>>>>> ffe1626e32d9e8b5423444e786f6984724fbfb96
                             },
                           )
                         : null,
