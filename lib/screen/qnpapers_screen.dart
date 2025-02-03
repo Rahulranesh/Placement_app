@@ -2,14 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QNPapersScreen extends StatelessWidget {
+  Future<List<Map<String, dynamic>>> _getPapers() async {
+    return await DatabaseService().getQNPapers();
+  }
+
+  Future<void> _downloadFile(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'Q/N Papers'),
       body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: DatabaseService().getQNPapers(),
+        future: _getPapers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(child: CircularProgressIndicator());
@@ -29,7 +42,12 @@ class QNPapersScreen extends StatelessWidget {
                 child: ListTile(
                   title: Text(paper['subject'] ?? ''),
                   subtitle: Text('Year: ${paper['year'] ?? ''}'),
-                  onTap: () {},
+                  trailing: IconButton(
+                    icon: Icon(Icons.download),
+                    onPressed: () {
+                      _downloadFile(paper['paperUrl']);
+                    },
+                  ),
                 ),
               );
             },

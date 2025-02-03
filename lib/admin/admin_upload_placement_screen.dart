@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
+import 'package:place/services/storage_service.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AdminUploadPlacementScreen extends StatefulWidget {
   final bool uploadOnly;
@@ -19,6 +22,35 @@ class _AdminUploadPlacementScreenState
   String title = '';
   String description = '';
   String materialUrl = '';
+  bool _isUploadingFile = false;
+
+  Future<void> _pickAndUploadFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png'],
+    );
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      setState(() {
+        _isUploadingFile = true;
+      });
+      try {
+        String ext = result.files.single.extension ?? "";
+        String destination =
+            "placementMaterials/${DateTime.now().millisecondsSinceEpoch}.$ext";
+        String url = await StorageService().uploadFile(file, destination);
+        setState(() {
+          materialUrl = url;
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("File upload failed: $e")));
+      }
+      setState(() {
+        _isUploadingFile = false;
+      });
+    }
+  }
 
   Future<void> _uploadMaterial() async {
     if (_formKey.currentState!.validate()) {
@@ -67,9 +99,20 @@ class _AdminUploadPlacementScreenState
                       onSaved: (value) => description = value.trim(),
                     ),
                     SizedBox(height: 15),
-                    NeumorphicTextField(
-                      label: 'Material URL',
-                      onSaved: (value) => materialUrl = value.trim(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(materialUrl.isEmpty
+                              ? "No file selected"
+                              : "File uploaded"),
+                        ),
+                        _isUploadingFile
+                            ? CircularProgressIndicator()
+                            : neumorphicButton(
+                                onPressed: _pickAndUploadFile,
+                                child: Text("Upload File",
+                                    style: TextStyle(fontSize: 16))),
+                      ],
                     ),
                     SizedBox(height: 20),
                     neumorphicButton(
@@ -107,7 +150,13 @@ class _AdminUploadPlacementScreenState
                   child: ListTile(
                     title: Text(material['title'] ?? ''),
                     subtitle: Text(material['description'] ?? ''),
-                    onTap: () {},
+                    trailing: IconButton(
+                      icon: Icon(Icons.download),
+                      onPressed: () {
+                        print(
+                            "Download material from: ${material['materialUrl']}");
+                      },
+                    ),
                   ),
                 );
               },

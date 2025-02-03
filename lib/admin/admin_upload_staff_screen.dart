@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
+import 'package:place/services/storage_service.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AdminUploadStaffScreen extends StatefulWidget {
   final bool uploadOnly;
@@ -17,6 +20,31 @@ class _AdminUploadStaffScreenState extends State<AdminUploadStaffScreen> {
   String name = '';
   String achievement = '';
   String profileImageUrl = '';
+  bool _isUploadingImage = false;
+
+  Future<void> _pickAndUploadImage() async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      setState(() {
+        _isUploadingImage = true;
+      });
+      try {
+        String url = await StorageService().uploadFile(
+            file, 'staffs/${DateTime.now().millisecondsSinceEpoch}');
+        setState(() {
+          profileImageUrl = url;
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Image upload failed: $e")));
+      }
+      setState(() {
+        _isUploadingImage = false;
+      });
+    }
+  }
 
   Future<void> _uploadStaff() async {
     if (_formKey.currentState!.validate()) {
@@ -65,9 +93,20 @@ class _AdminUploadStaffScreenState extends State<AdminUploadStaffScreen> {
                       onSaved: (value) => achievement = value.trim(),
                     ),
                     SizedBox(height: 15),
-                    NeumorphicTextField(
-                      label: 'Profile Image URL',
-                      onSaved: (value) => profileImageUrl = value.trim(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(profileImageUrl.isEmpty
+                              ? "No image selected"
+                              : "Image uploaded"),
+                        ),
+                        _isUploadingImage
+                            ? CircularProgressIndicator()
+                            : neumorphicButton(
+                                onPressed: _pickAndUploadImage,
+                                child: Text("Upload Image",
+                                    style: TextStyle(fontSize: 16))),
+                      ],
                     ),
                     SizedBox(height: 20),
                     neumorphicButton(

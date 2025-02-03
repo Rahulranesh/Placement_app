@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
+import 'package:place/services/storage_service.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AdminUploadQNPapersScreen extends StatefulWidget {
   final bool uploadOnly;
@@ -18,6 +21,31 @@ class _AdminUploadQNPapersScreenState extends State<AdminUploadQNPapersScreen> {
   String subject = '';
   String year = '';
   String paperUrl = '';
+  bool _isUploadingFile = false;
+
+  Future<void> _pickAndUploadPDF() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      setState(() {
+        _isUploadingFile = true;
+      });
+      try {
+        String url = await StorageService().uploadFile(
+            file, 'qnpapers/${DateTime.now().millisecondsSinceEpoch}.pdf');
+        setState(() {
+          paperUrl = url;
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("PDF upload failed: $e")));
+      }
+      setState(() {
+        _isUploadingFile = false;
+      });
+    }
+  }
 
   Future<void> _uploadPaper() async {
     if (_formKey.currentState!.validate()) {
@@ -66,9 +94,20 @@ class _AdminUploadQNPapersScreenState extends State<AdminUploadQNPapersScreen> {
                       onSaved: (value) => year = value.trim(),
                     ),
                     SizedBox(height: 15),
-                    NeumorphicTextField(
-                      label: 'Paper URL',
-                      onSaved: (value) => paperUrl = value.trim(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(paperUrl.isEmpty
+                              ? "No PDF selected"
+                              : "PDF uploaded"),
+                        ),
+                        _isUploadingFile
+                            ? CircularProgressIndicator()
+                            : neumorphicButton(
+                                onPressed: _pickAndUploadPDF,
+                                child: Text("Upload PDF",
+                                    style: TextStyle(fontSize: 16))),
+                      ],
                     ),
                     SizedBox(height: 20),
                     neumorphicButton(
@@ -106,7 +145,13 @@ class _AdminUploadQNPapersScreenState extends State<AdminUploadQNPapersScreen> {
                   child: ListTile(
                     title: Text(paper['subject'] ?? ''),
                     subtitle: Text('Year: ${paper['year'] ?? ''}'),
-                    onTap: () {},
+                    trailing: IconButton(
+                      icon: Icon(Icons.download),
+                      onPressed: () {
+                        // Use url_launcher to download/view the PDF.
+                        print("Download PDF from: ${paper['paperUrl']}");
+                      },
+                    ),
                   ),
                 );
               },
