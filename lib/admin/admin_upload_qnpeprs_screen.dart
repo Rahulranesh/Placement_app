@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
-import 'package:place/services/storage_service.dart';
+import 'package:place/services/subabase_storage_service.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -32,8 +32,8 @@ class _AdminUploadQNPapersScreenState extends State<AdminUploadQNPapersScreen> {
         _isUploadingFile = true;
       });
       try {
-        String url = await StorageService().uploadFile(
-            file, 'qnpapers/${DateTime.now().millisecondsSinceEpoch}.pdf');
+        String url =
+            await SupabaseStorageService().uploadFile(file, 'qn_paper');
         setState(() {
           paperUrl = url;
         });
@@ -148,8 +148,7 @@ class _AdminUploadQNPapersScreenState extends State<AdminUploadQNPapersScreen> {
                     trailing: IconButton(
                       icon: Icon(Icons.download),
                       onPressed: () {
-                        // Use url_launcher to download/view the PDF.
-                        print("Download PDF from: ${paper['paperUrl']}");
+                        // For downloading, use url_launcher (see student screens)
                       },
                     ),
                   ),

@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
-import 'package:place/services/storage_service.dart';
+import 'package:place/services/subabase_storage_service.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AdminUploadStaffScreen extends StatefulWidget {
   final bool uploadOnly;
@@ -31,8 +32,10 @@ class _AdminUploadStaffScreenState extends State<AdminUploadStaffScreen> {
         _isUploadingImage = true;
       });
       try {
-        String url = await StorageService().uploadFile(
-            file, 'staffs/${DateTime.now().millisecondsSinceEpoch}');
+        // Optionally, you can use the Firebase user's uid in the file path.
+        String uid = FirebaseAuth.instance.currentUser?.uid ?? 'unknown';
+        String url =
+            await SupabaseStorageService().uploadFile(file, 'staff_image_$uid');
         setState(() {
           profileImageUrl = url;
         });
