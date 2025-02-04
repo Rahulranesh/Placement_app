@@ -28,10 +28,10 @@ class _ChatScreenState extends State<ChatScreen> {
       "model": "gpt-3.5-turbo",
       "messages": [
         {"role": "system", "content": "You are an educational assistant for a placement app. Answer only questions related to academics, placements, education, and career guidance."},
-        {"role": "user", "content": userMessage},
+        {"role": "user", "content": userMessage}
       ],
       "temperature": 0.7,
-      "max_tokens": 150,
+      "max_tokens": 150
     };
     final response = await http.post(url, headers: {"Content-Type": "application/json", "Authorization": "Bearer $apiKey"}, body: jsonEncode(body));
     if (response.statusCode == 200) {
@@ -108,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 Expanded(child: NeumorphicTextField(label: "Enter your question...", onSaved: (value) {}, controller: _controller)),
                 SizedBox(width: 10),
-                neumorphicButton(onPressed: _sendMessage, child: Icon(Icons.send)),
+                neumorphicButton(onPressed: _sendMessage, child: Icon(Icons.send))
               ],
             ),
           ),

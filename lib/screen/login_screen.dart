@@ -1,6 +1,4 @@
-// login_screen.dart
 import 'package:flutter/material.dart';
-
 import 'package:place/admin/admin_home_screen.dart';
 import 'package:place/screen/register_screen.dart';
 import 'package:place/screen/student_home_screen.dart';
@@ -8,8 +6,8 @@ import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/services/auth_services.dart';
 
 class LoginScreen extends StatefulWidget {
-  final ValueNotifier<bool>? themeNotifier;
-  LoginScreen({Key? key, this.themeNotifier}) : super(key: key);
+  final ValueNotifier<bool> themeNotifier;
+  LoginScreen({Key? key, required this.themeNotifier}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -29,13 +27,12 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => isAdmin
-                ? AdminHomeScreen()
+                ? AdminHomeScreen(themeNotifier: widget.themeNotifier)
                 : StudentHomeScreen(themeNotifier: widget.themeNotifier),
           ),
         );
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Login failed')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Login failed')));
       }
     }
   }
@@ -55,9 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Login',
-                      style:
-                          TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                  Text('Login', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
                   SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -86,25 +81,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  NeumorphicTextField(
-                      label: "Username", onSaved: (value) => username = value),
+                  NeumorphicTextField(label: "Username", onSaved: (value) => username = value),
                   SizedBox(height: 15),
-                  NeumorphicTextField(
-                      label: "Password",
-                      obscureText: true,
-                      onSaved: (value) => password = value),
+                  NeumorphicTextField(label: "Password", obscureText: true, onSaved: (value) => password = value),
                   SizedBox(height: 20),
-                  neumorphicButton(
-                      onPressed: _login,
-                      child: Center(
-                          child:
-                              Text('Login', style: TextStyle(fontSize: 18)))),
+                  neumorphicButton(onPressed: _login, child: Center(child: Text('Login', style: TextStyle(fontSize: 18)))),
                   SizedBox(height: 15),
                   TextButton(
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RegisterScreen())),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen())),
                     child: Text("Don't have an account? Register"),
                   ),
                 ],

@@ -1,10 +1,9 @@
-/* admin_home_screen.dart */
 import 'package:flutter/material.dart';
-import 'package:place/admin/admin_upload_exams_screen.dart';
-import 'package:place/admin/admin_upload_placement_info_screen.dart';
-import 'package:place/admin/admin_upload_placement_screen.dart';
-import 'package:place/admin/admin_upload_qnpeprs_screen.dart';
 import 'package:place/admin/admin_upload_staff_screen.dart';
+import 'package:place/admin/admin_upload_exams_screen.dart';
+import 'package:place/admin/admin_upload_qnpeprs_screen.dart';
+import 'package:place/admin/admin_upload_placement_screen.dart';
+import 'package:place/admin/admin_upload_placement_info_screen.dart';
 import 'package:place/screen/campus_map.dart';
 import 'package:place/utils/custom_appbar.dart';
 import 'package:place/utils/custom_bottom_nav_bar.dart';
@@ -13,6 +12,9 @@ import 'package:place/services/auth_services.dart';
 import 'package:place/screen/login_screen.dart';
 
 class AdminHomeScreen extends StatefulWidget {
+  final ValueNotifier<bool> themeNotifier;
+  const AdminHomeScreen({Key? key, required this.themeNotifier}) : super(key: key);
+
   @override
   _AdminHomeScreenState createState() => _AdminHomeScreenState();
 }
@@ -35,11 +37,13 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     AdminUploadPlacementInfoScreen(),
     
   ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
   void _onAddPressed() {
     if (_selectedIndex == 0) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => AdminUploadStaffScreen(uploadOnly: true)));
@@ -53,10 +57,12 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       Navigator.push(context, MaterialPageRoute(builder: (context) => AdminUploadPlacementInfoScreen(uploadOnly: true)));
     }
   }
+
   Future<void> _logout() async {
     await AuthService().logout();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(themeNotifier: widget.themeNotifier)));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,8 +82,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               leading: Icon(Icons.brightness_6),
               title: Text('Dark Mode'),
               trailing: Switch(
-                value: Theme.of(context).brightness == Brightness.dark,
-                onChanged: (val) {},
+                value: widget.themeNotifier.value,
+                onChanged: (val) {
+                  widget.themeNotifier.value = val;
+                },
               ),
             ),
             ListTile(

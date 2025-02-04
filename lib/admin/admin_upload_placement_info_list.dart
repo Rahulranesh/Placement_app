@@ -37,7 +37,7 @@ class AdminPlacementInfoListScreen extends StatelessWidget {
                     SizedBox(height: 8),
                     Text('Eligibility: ${info['eligibility'] ?? ''}'),
                     SizedBox(height: 8),
-                    Text(info['description'] ?? ''),
+                    Text(info['description'] ?? '')
                   ],
                 ),
               );

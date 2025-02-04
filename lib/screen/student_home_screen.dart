@@ -13,8 +13,8 @@ import 'package:place/utils/custom_bottom_nav_bar.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 
 class StudentHomeScreen extends StatefulWidget {
-  final ValueNotifier<bool>? themeNotifier;
-  StudentHomeScreen({Key? key, this.themeNotifier}) : super(key: key);
+  final ValueNotifier<bool> themeNotifier;
+  StudentHomeScreen({Key? key, required this.themeNotifier}) : super(key: key);
 
   @override
   _StudentHomeScreenState createState() => _StudentHomeScreenState();
@@ -27,6 +27,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     ExamsScreen(),
     QNPapersScreen(),
     PlacementPreparationScreen(),
+    
   ];
 
   void _onItemTapped(int index) {
@@ -37,12 +38,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
   Future<void> _logout() async {
     await AuthService().logout();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LoginScreen(themeNotifier: widget.themeNotifier),
-      ),
-    );
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(themeNotifier: widget.themeNotifier)));
   }
 
   @override
@@ -56,22 +52,16 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
             DrawerHeader(
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
-                borderRadius:
-                    BorderRadius.only(bottomRight: Radius.circular(20)),
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(20)),
               ),
-              child: Center(
-                  child: Text(
-                'Welcome!',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              )),
+              child: Center(child: Text('Welcome!', style: TextStyle(color: Colors.white, fontSize: 24))),
             ),
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Profile'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
               },
             ),
             ListTile(
@@ -79,18 +69,15 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               title: Text('Track Progress'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProgressScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProgressScreen()));
               },
             ),
             SwitchListTile(
               secondary: Icon(Icons.brightness_6),
               title: Text('Dark Mode'),
-              value: widget.themeNotifier?.value ?? false,
+              value: widget.themeNotifier.value,
               onChanged: (value) {
-                if (widget.themeNotifier != null) {
-                  widget.themeNotifier!.value = value;
-                }
+                widget.themeNotifier.value = value;
               },
             ),
             ListTile(
@@ -109,8 +96,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Staffs'),
           BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Exams'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Q/N Papers'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.school), label: 'Placement Prep'),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Placement Prep'),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Campus Map'),
         ],
       ),

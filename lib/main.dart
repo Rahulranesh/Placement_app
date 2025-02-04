@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:place/screen/login_screen.dart';
 import 'package:place/screen/student_home_screen.dart';
 import 'package:place/admin/admin_home_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth; // Alias for Firebase User
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,7 +19,6 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   final ValueNotifier<bool> isDarkMode = ValueNotifier(false);
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
@@ -43,9 +42,7 @@ class MyApp extends StatelessWidget {
               ),
               centerTitle: true,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(20),
-                ),
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
               ),
             ),
           ),
@@ -64,9 +61,7 @@ class MyApp extends StatelessWidget {
               ),
               centerTitle: true,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(20),
-                ),
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
               ),
             ),
           ),
@@ -81,11 +76,9 @@ class MyApp extends StatelessWidget {
 class AuthWrapper extends StatelessWidget {
   final ValueNotifier<bool> themeNotifier;
   const AuthWrapper({Key? key, required this.themeNotifier}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<firebase_auth.User?>(
-      // Use firebase_auth.User to resolve conflict
       stream: firebase_auth.FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -101,7 +94,7 @@ class AuthWrapper extends StatelessWidget {
               if (userSnapshot.hasData && userSnapshot.data!.exists) {
                 final data = userSnapshot.data!.data() as Map<String, dynamic>;
                 if (data['role'] == 'Admin') {
-                  return AdminHomeScreen();
+                  return AdminHomeScreen(themeNotifier: themeNotifier);
                 } else {
                   return StudentHomeScreen(themeNotifier: themeNotifier);
                 }
@@ -115,3 +108,4 @@ class AuthWrapper extends StatelessWidget {
     );
   }
 }
+

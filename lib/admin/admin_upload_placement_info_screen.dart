@@ -27,7 +27,7 @@ class _AdminUploadPlacementInfoScreenState extends State<AdminUploadPlacementInf
           'companyName': companyName,
           'eligibility': eligibility,
           'description': description,
-          'placementDate': placementDate!.toIso8601String(),
+          'placementDate': placementDate!.toIso8601String()
         });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Placement info uploaded successfully!")));
         Navigator.pop(context);
@@ -41,12 +41,7 @@ class _AdminUploadPlacementInfoScreenState extends State<AdminUploadPlacementInf
     DateTime initialDate = DateTime.now();
     DateTime firstDate = initialDate;
     DateTime lastDate = initialDate.add(Duration(days: 365));
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: firstDate,
-      lastDate: lastDate,
-    );
+    final DateTime? picked = await showDatePicker(context: context, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
     if (picked != null && picked != placementDate) {
       setState(() {
         placementDate = picked;
@@ -75,14 +70,12 @@ class _AdminUploadPlacementInfoScreenState extends State<AdminUploadPlacementInf
                   SizedBox(height: 20),
                   Row(
                     children: [
-                      Expanded(
-                        child: Text(placementDate != null ? 'Selected Date: ${DateFormat.yMd().format(placementDate!)}' : 'No date selected', style: TextStyle(fontSize: 16)),
-                      ),
-                      ElevatedButton(onPressed: _selectDate, child: Text('Select Date')),
+                      Expanded(child: Text(placementDate != null ? 'Selected Date: ${DateFormat.yMd().format(placementDate!)}' : 'No date selected', style: TextStyle(fontSize: 16))),
+                      ElevatedButton(onPressed: _selectDate, child: Text('Select Date'))
                     ],
                   ),
                   SizedBox(height: 20),
-                  neumorphicButton(onPressed: _uploadPlacementInfo, child: Text('Upload Placement Info', style: TextStyle(fontSize: 18))),
+                  neumorphicButton(onPressed: _uploadPlacementInfo, child: Text('Upload Placement Info', style: TextStyle(fontSize: 18)))
                 ],
               ),
             ),

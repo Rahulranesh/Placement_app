@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:place/screen/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
+  final ValueNotifier<bool> themeNotifier;
+  const SplashScreen({Key? key, required this.themeNotifier}) : super(key: key);
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -13,7 +16,11 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(themeNotifier: widget.themeNotifier),
+        ),
+      );
     });
   }
 
