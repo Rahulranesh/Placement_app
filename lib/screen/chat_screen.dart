@@ -20,32 +20,20 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<ChatMessage> _messages = [];
   final TextEditingController _controller = TextEditingController();
   bool _isLoading = false;
-  final String apiKey =
-      "k-proj-lX8kEwWLsaXQdEF_GgAvQxFpjK4luz4sv6VmQtT5Amrxvyp0iSYtZJci7xE-sEZhA61xjqiTBPT3BlbkFJhls04iA_BZ695eW9ZjW-2bACMZWNkat1PvtPr5cerAqgT30H2dl_-MY5JqNVx2EPG7fEQi5rMA";
+  final String apiKey = "k-proj-lX8kEwWLsaXQdEF_GgAvQxFpjK4luz4sv6VmQtT5Amrxvyp0iSYtZJci7xE-sEZhA61xjqiTBPT3BlbkFJhls04iA_BZ695eW9ZjW-2bACMZWNkat1PvtPr5cerAqgT30H2dl_-MY5JqNVx2EPG7fEQi5rMA";
 
   Future<String> fetchAIResponse(String userMessage) async {
     final url = Uri.parse("https://api.openai.com/v1/chat/completions");
     final Map<String, dynamic> body = {
       "model": "gpt-3.5-turbo",
       "messages": [
-        {
-          "role": "system",
-          "content":
-              "You are an educational assistant for a placement app. Answer only questions related to academics, placements, education, and career guidance."
-        },
+        {"role": "system", "content": "You are an educational assistant for a placement app. Answer only questions related to academics, placements, education, and career guidance."},
         {"role": "user", "content": userMessage},
       ],
       "temperature": 0.7,
       "max_tokens": 150,
     };
-    final response = await http.post(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $apiKey",
-      },
-      body: jsonEncode(body),
-    );
+    final response = await http.post(url, headers: {"Content-Type": "application/json", "Authorization": "Bearer $apiKey"}, body: jsonEncode(body));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       String reply = data["choices"][0]["message"]["content"];
@@ -71,15 +59,13 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     } catch (e) {
       setState(() {
-        _messages.add(ChatMessage(
-            text: "Error: Unable to get response. Please try again.", isUser: false));
+        _messages.add(ChatMessage(text: "Error: Unable to get response. Please try again.", isUser: false));
         _isLoading = false;
       });
     }
   }
 
   Widget _buildMessage(ChatMessage message) {
-    // Set bubble colors based on message source.
     final bubbleColor = message.isUser ? Colors.blueAccent[100] : Colors.grey[300];
     final textColor = message.isUser ? Colors.white : Colors.black;
     return Padding(
@@ -110,33 +96,19 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: EdgeInsets.only(top: 10),
               itemCount: _messages.length,
               itemBuilder: (context, index) {
-                // Because the list is reversed, we display messages from the end.
                 final message = _messages[_messages.length - 1 - index];
                 return _buildMessage(message);
               },
             ),
           ),
-          if (_isLoading)
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: CircularProgressIndicator(),
-            ),
+          if (_isLoading) Padding(padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
           Padding(
             padding: EdgeInsets.all(20),
             child: Row(
               children: [
-                Expanded(
-                  child: NeumorphicTextField(
-                    label: "Enter your question...",
-                    onSaved: (value) {},
-                    controller: _controller,
-                  ),
-                ),
+                Expanded(child: NeumorphicTextField(label: "Enter your question...", onSaved: (value) {}, controller: _controller)),
                 SizedBox(width: 10),
-                neumorphicButton(
-                  onPressed: _sendMessage,
-                  child: Icon(Icons.send),
-                ),
+                neumorphicButton(onPressed: _sendMessage, child: Icon(Icons.send)),
               ],
             ),
           ),

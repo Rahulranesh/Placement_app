@@ -1,3 +1,4 @@
+/* admin_home_screen.dart */
 import 'package:flutter/material.dart';
 import 'package:place/admin/admin_upload_exams_screen.dart';
 import 'package:place/admin/admin_upload_placement_info_screen.dart';
@@ -8,6 +9,8 @@ import 'package:place/screen/campus_map.dart';
 import 'package:place/utils/custom_appbar.dart';
 import 'package:place/utils/custom_bottom_nav_bar.dart';
 import 'package:place/utils/neumorphic_widget.dart';
+import 'package:place/services/auth_services.dart';
+import 'package:place/screen/login_screen.dart';
 
 class AdminHomeScreen extends StatefulWidget {
   @override
@@ -30,51 +33,61 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     AdminUploadQNPapersScreen(),
     AdminUploadPlacementScreen(),
     AdminUploadPlacementInfoScreen(),
+    
   ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
   void _onAddPressed() {
     if (_selectedIndex == 0) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AdminUploadStaffScreen(uploadOnly: true)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AdminUploadStaffScreen(uploadOnly: true)));
     } else if (_selectedIndex == 1) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AdminUploadExamsScreen(uploadOnly: true)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AdminUploadExamsScreen(uploadOnly: true)));
     } else if (_selectedIndex == 2) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  AdminUploadQNPapersScreen(uploadOnly: true)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AdminUploadQNPapersScreen(uploadOnly: true)));
     } else if (_selectedIndex == 3) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  AdminUploadPlacementScreen(uploadOnly: true)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AdminUploadPlacementScreen(uploadOnly: true)));
     } else if (_selectedIndex == 4) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  AdminUploadPlacementInfoScreen(uploadOnly: true)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AdminUploadPlacementInfoScreen(uploadOnly: true)));
     }
   }
-
+  Future<void> _logout() async {
+    await AuthService().logout();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Pass showNotificationButton: true for admin screens.
       appBar: CustomAppBar(title: _titles[_selectedIndex], showNotificationButton: true),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(20)),
+              ),
+              child: Center(child: Text('Admin Panel', style: TextStyle(color: Colors.white, fontSize: 24))),
+            ),
+            ListTile(
+              leading: Icon(Icons.brightness_6),
+              title: Text('Dark Mode'),
+              trailing: Switch(
+                value: Theme.of(context).brightness == Brightness.dark,
+                onChanged: (val) {},
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: _logout,
+            ),
+          ],
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: NeumorphicContainer(
@@ -82,12 +95,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           child: _widgetOptions[_selectedIndex],
         ),
       ),
-      floatingActionButton: _selectedIndex < 5
-          ? FloatingActionButton(
-              onPressed: _onAddPressed,
-              child: Icon(Icons.add),
-            )
-          : null,
+      floatingActionButton: _selectedIndex < 5 ? FloatingActionButton(onPressed: _onAddPressed, child: Icon(Icons.add)) : null,
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -95,10 +103,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'Staffs'),
           BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Exams'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Q/N Papers'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.school), label: 'Placement Mat.'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.school), label: 'Placement Info'),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Placement Mat.'),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Placement Info'),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Campus Map'),
         ],
       ),
