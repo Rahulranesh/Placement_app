@@ -1,20 +1,13 @@
+// exams_screen.dart
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:place/utils/download_helper.dart'; // Import the download helper
 
 class ExamsScreen extends StatelessWidget {
   Future<List<Map<String, dynamic>>> _getExams() async {
     return await DatabaseService().getExams();
-  }
-
-  Future<void> _downloadFile(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 
   @override
@@ -37,16 +30,19 @@ class ExamsScreen extends StatelessWidget {
             itemCount: exams.length,
             itemBuilder: (context, index) {
               var exam = exams[index];
+              String examUrl = exam['examImageUrl'] ?? '';
               return NeumorphicContainer(
                 padding: EdgeInsets.all(16),
                 child: ListTile(
                   title: Text(exam['title'] ?? ''),
                   subtitle: Text('Date: ${exam['date'] ?? ''}'),
-                  trailing: exam.containsKey('examImageUrl')
+                  trailing: examUrl.isNotEmpty
                       ? IconButton(
                           icon: Icon(Icons.download),
                           onPressed: () {
-                            _downloadFile(exam['examImageUrl']);
+                            // Use the helper function to download and open the file.
+                            String fileName = examUrl.split('/').last;
+                            downloadAndOpenFile(context, examUrl, fileName);
                           },
                         )
                       : null,

@@ -1,20 +1,13 @@
+// qnpapers_screen.dart
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:place/utils/download_helper.dart';
 
 class QNPapersScreen extends StatelessWidget {
   Future<List<Map<String, dynamic>>> _getPapers() async {
     return await DatabaseService().getQNPapers();
-  }
-
-  Future<void> _downloadFile(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 
   @override
@@ -37,17 +30,21 @@ class QNPapersScreen extends StatelessWidget {
             itemCount: papers.length,
             itemBuilder: (context, index) {
               var paper = papers[index];
+              String paperUrl = paper['paperUrl'] ?? '';
               return NeumorphicContainer(
                 padding: EdgeInsets.all(16),
                 child: ListTile(
                   title: Text(paper['subject'] ?? ''),
                   subtitle: Text('Year: ${paper['year'] ?? ''}'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.download),
-                    onPressed: () {
-                      _downloadFile(paper['paperUrl']);
-                    },
-                  ),
+                  trailing: paperUrl.isNotEmpty
+                      ? IconButton(
+                          icon: Icon(Icons.download),
+                          onPressed: () {
+                            String fileName = paperUrl.split('/').last;
+                            downloadAndOpenFile(context, paperUrl, fileName);
+                          },
+                        )
+                      : null,
                 ),
               );
             },
