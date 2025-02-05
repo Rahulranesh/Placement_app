@@ -86,7 +86,7 @@ class _AdminUploadStaffScreenState extends State<AdminUploadStaffScreen> {
                     ),
                     SizedBox(height: 20),
                     neumorphicButton(onPressed: _uploadStaff, child: Text('Upload Staff', style: TextStyle(fontSize: 18))),
-                  ]
+                  ],
                 ),
               ),
             ),
