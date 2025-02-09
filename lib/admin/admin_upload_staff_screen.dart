@@ -91,7 +91,7 @@ class _AdminUploadStaffScreenState extends State<AdminUploadStaffScreen> {
               ),
             ),
           ),
-        ),
+        )
       );
     } else {
       return Scaffold(
