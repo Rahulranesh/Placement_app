@@ -10,8 +10,26 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  String name = '', department = '', username = '', password = '';
+
+  // Form fields
+  String name = '';
+  String department = 'cse'; // Default department value
+  String username = '';
+  String password = '';
   bool isAdmin = false;
+
+  // List of department options
+  final List<String> departments = [
+    'cse',
+    'it',
+    'ece',
+    'eee',
+    'mech',
+    'civil',
+    'ibt',
+    'eie',
+    'prod'
+  ];
 
   void _register() async {
     if (_formKey.currentState!.validate()) {
@@ -42,6 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               key: _formKey,
               child: Column(
                 children: [
+                  // Role selection (Student/Admin)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -69,26 +88,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                   SizedBox(height: 20),
+                  // Name field
                   NeumorphicTextField(
-                      label: "Name", onSaved: (value) => name = value),
+                    label: "Name",
+                    onSaved: (value) => name = value,
+                  ),
                   SizedBox(height: 15),
-                  NeumorphicTextField(
-                      label: "Department",
-                      onSaved: (value) => department = value),
+                  // Department dropdown field
+                  DropdownButtonFormField<String>(
+                    value: department,
+                    decoration: InputDecoration(
+                      labelText: "Department",
+                      border: OutlineInputBorder(),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                    ),
+                    items: departments.map((dept) {
+                      return DropdownMenuItem<String>(
+                        value: dept,
+                        child: Text(dept.toUpperCase()),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        department = value!;
+                      });
+                    },
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please select a department'
+                        : null,
+                    onSaved: (value) => department = value!,
+                  ),
                   SizedBox(height: 15),
+                  // Username field
                   NeumorphicTextField(
-                      label: "Username", onSaved: (value) => username = value),
+                    label: "Username",
+                    onSaved: (value) => username = value,
+                  ),
                   SizedBox(height: 15),
+                  // Password field
                   NeumorphicTextField(
-                      label: "Password",
-                      obscureText: true,
-                      onSaved: (value) => password = value),
+                    label: "Password",
+                    obscureText: true,
+                    onSaved: (value) => password = value,
+                  ),
                   SizedBox(height: 20),
+                  // Register button
                   neumorphicButton(
-                      onPressed: _register,
-                      child: Center(
-                          child: Text('Register',
-                              style: TextStyle(fontSize: 18)))),
+                    onPressed: _register,
+                    child: Center(
+                      child: Text(
+                        'Register',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
