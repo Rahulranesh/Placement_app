@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:place/route_transition.dart';
+import 'package:place/screen/qnpapers_screen.dart';
 import 'package:place/screen/staffs_screen.dart';
 import 'package:place/screen/exams_screen.dart';
-import 'package:place/screen/qnpapers_screen.dart';
 import 'package:place/screen/placement_preparation_screen.dart';
 import 'package:place/screen/profile_screen.dart';
 import 'package:place/screen/progress_screen.dart';
@@ -10,7 +10,6 @@ import 'package:place/screen/login_screen.dart';
 import 'package:place/services/auth_services.dart';
 import 'package:place/utils/custom_appbar.dart';
 import 'package:place/utils/custom_bottom_nav_bar.dart';
-import 'package:place/utils/neumorphic_widget.dart';
 
 
 class StudentHomeScreen extends StatefulWidget {
