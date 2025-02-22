@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
           ),
           darkTheme: ThemeData(
             brightness: Brightness.dark,
-            primarySwatch: Colors.blueGrey,
+            primaryColor: Colors.black,
             scaffoldBackgroundColor: Colors.black,
             appBarTheme: AppBarTheme(
               backgroundColor: Colors.black,

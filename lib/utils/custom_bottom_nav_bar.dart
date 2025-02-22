@@ -9,15 +9,21 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, offset: Offset(4, 4), blurRadius: 10),
-          BoxShadow(color: Colors.white, offset: Offset(-4, -4), blurRadius: 10),
-        ],
+        boxShadow: isDark 
+          ? [
+              BoxShadow(color: Colors.black54, offset: Offset(4, 4), blurRadius: 10),
+              BoxShadow(color: Colors.black87, offset: Offset(-4, -4), blurRadius: 10),
+            ]
+          : [
+              BoxShadow(color: Colors.black12, offset: Offset(4, 4), blurRadius: 10),
+              BoxShadow(color: Colors.white, offset: Offset(-4, -4), blurRadius: 10),
+            ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
