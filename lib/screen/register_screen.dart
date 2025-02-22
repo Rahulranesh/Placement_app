@@ -11,14 +11,14 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // Form fields
+  // Form fields.
   String name = '';
-  String department = 'cse'; // Default department value
+  String department = 'cse'; // Default department.
   String username = '';
   String password = '';
   bool isAdmin = false;
 
-  // List of department options
+  // List of department options.
   final List<String> departments = [
     'cse',
     'it',
@@ -60,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  // Role selection (Student/Admin)
+                  // Role selection (Student/Admin).
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -88,13 +88,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  // Name field
+                  // Name field.
                   NeumorphicTextField(
                     label: "Name",
                     onSaved: (value) => name = value,
                   ),
                   SizedBox(height: 15),
-                  // Department dropdown field
+                  // Department dropdown field.
                   DropdownButtonFormField<String>(
                     value: department,
                     decoration: InputDecoration(
@@ -120,20 +120,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onSaved: (value) => department = value!,
                   ),
                   SizedBox(height: 15),
-                  // Username field
+                  // Username field.
                   NeumorphicTextField(
-                    label: "Username",
-                    onSaved: (value) => username = value,
-                  ),
+                      label: "Username", onSaved: (value) => username = value),
                   SizedBox(height: 15),
-                  // Password field
+                  // Password field.
                   NeumorphicTextField(
                     label: "Password",
                     obscureText: true,
                     onSaved: (value) => password = value,
                   ),
                   SizedBox(height: 20),
-                  // Register button
+                  // Register button.
                   neumorphicButton(
                     onPressed: _register,
                     child: Center(

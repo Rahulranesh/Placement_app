@@ -8,7 +8,8 @@ class DatabaseService {
   Future<String> getUserDepartment() async {
     User? user = _auth.currentUser;
     if (user == null) throw Exception("User not logged in.");
-    DocumentSnapshot userDoc = await _db.collection('users').doc(user.uid).get();
+    DocumentSnapshot userDoc =
+        await _db.collection('users').doc(user.uid).get();
     if (!userDoc.exists) {
       // Return a default department instead of throwing an error.
       return "global";
@@ -22,8 +23,11 @@ class DatabaseService {
 
   Future<List<Map<String, dynamic>>> getStaffs() async {
     String dept = await getUserDepartment();
-    QuerySnapshot snapshot =
-        await _db.collection('departments').doc(dept).collection('staffs').get();
+    QuerySnapshot snapshot = await _db
+        .collection('departments')
+        .doc(dept)
+        .collection('staffs')
+        .get();
     return snapshot.docs
         .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
         .toList();
