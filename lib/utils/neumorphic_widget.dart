@@ -133,53 +133,21 @@ class NeumorphicRadio<T> extends StatelessWidget {
           boxShadow: selected
               ? (isDark
                   ? [
-                      BoxShadow(
-                          color: Colors.black54,
-                          offset: Offset(2, 2),
-                          blurRadius: 5,
-                          spreadRadius: 1),
-                      BoxShadow(
-                          color: Colors.black87,
-                          offset: Offset(-2, -2),
-                          blurRadius: 5,
-                          spreadRadius: 1),
+                      BoxShadow(color: Colors.black54, offset: Offset(2, 2), blurRadius: 5, spreadRadius: 1),
+                      BoxShadow(color: Colors.black87, offset: Offset(-2, -2), blurRadius: 5, spreadRadius: 1),
                     ]
                   : [
-                      BoxShadow(
-                          color: Colors.black26,
-                          offset: Offset(2, 2),
-                          blurRadius: 5,
-                          spreadRadius: 1),
-                      BoxShadow(
-                          color: Colors.white,
-                          offset: Offset(-2, -2),
-                          blurRadius: 5,
-                          spreadRadius: 1),
+                      BoxShadow(color: Colors.black26, offset: Offset(2, 2), blurRadius: 5, spreadRadius: 1),
+                      BoxShadow(color: Colors.white, offset: Offset(-2, -2), blurRadius: 5, spreadRadius: 1),
                     ])
               : (isDark
                   ? [
-                      BoxShadow(
-                          color: Colors.black54,
-                          offset: Offset(4, 4),
-                          blurRadius: 10,
-                          spreadRadius: 1),
-                      BoxShadow(
-                          color: Colors.black87,
-                          offset: Offset(-4, -4),
-                          blurRadius: 10,
-                          spreadRadius: 1),
+                      BoxShadow(color: Colors.black54, offset: Offset(4, 4), blurRadius: 10, spreadRadius: 1),
+                      BoxShadow(color: Colors.black87, offset: Offset(-4, -4), blurRadius: 10, spreadRadius: 1),
                     ]
                   : [
-                      BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(4, 4),
-                          blurRadius: 10,
-                          spreadRadius: 1),
-                      BoxShadow(
-                          color: Colors.white,
-                          offset: Offset(-4, -4),
-                          blurRadius: 10,
-                          spreadRadius: 1),
+                      BoxShadow(color: Colors.black12, offset: Offset(4, 4), blurRadius: 10, spreadRadius: 1),
+                      BoxShadow(color: Colors.white, offset: Offset(-4, -4), blurRadius: 10, spreadRadius: 1),
                     ]),
         ),
         padding: EdgeInsets.all(8.0),

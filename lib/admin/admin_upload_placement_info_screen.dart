@@ -29,10 +29,12 @@ class _AdminUploadPlacementInfoScreenState extends State<AdminUploadPlacementInf
           'description': description,
           'placementDate': placementDate!.toIso8601String()
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Placement info uploaded successfully!")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Placement info uploaded successfully!")));
         Navigator.pop(context);
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error uploading placement info: $e")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error uploading placement info: $e")));
       }
     }
   }

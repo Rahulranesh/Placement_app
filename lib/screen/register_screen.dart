@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:place/services/auth_services.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
+import 'package:place/screen/login_screen.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -10,15 +12,12 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-
-  // Form fields.
   String name = '';
-  String department = 'cse'; // Default department.
+  String department = 'cse';
   String username = '';
   String password = '';
   bool isAdmin = false;
 
-  // List of department options.
   final List<String> departments = [
     'cse',
     'it',
@@ -34,10 +33,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _register() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      bool success = await AuthService()
-          .register(name, department, username, password, isAdmin);
+      bool success = await AuthService().register(name, department, username, password, isAdmin);
       if (success) {
         Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Registration successful")));
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Registration failed')));
@@ -60,7 +60,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  // Role selection (Student/Admin).
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -88,20 +87,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  // Name field.
                   NeumorphicTextField(
                     label: "Name",
                     onSaved: (value) => name = value,
                   ),
                   SizedBox(height: 15),
-                  // Department dropdown field.
                   DropdownButtonFormField<String>(
                     value: department,
                     decoration: InputDecoration(
                       labelText: "Department",
                       border: OutlineInputBorder(),
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                     ),
                     items: departments.map((dept) {
                       return DropdownMenuItem<String>(
@@ -114,24 +110,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         department = value!;
                       });
                     },
-                    validator: (value) => value == null || value.isEmpty
-                        ? 'Please select a department'
-                        : null,
+                    validator: (value) => value == null || value.isEmpty ? 'Please select a department' : null,
                     onSaved: (value) => department = value!,
                   ),
                   SizedBox(height: 15),
-                  // Username field.
-                  NeumorphicTextField(
-                      label: "Username", onSaved: (value) => username = value),
+                  NeumorphicTextField(label: "Username", onSaved: (value) => username = value),
                   SizedBox(height: 15),
-                  // Password field.
-                  NeumorphicTextField(
-                    label: "Password",
-                    obscureText: true,
-                    onSaved: (value) => password = value,
-                  ),
+                  NeumorphicTextField(label: "Password", obscureText: true, onSaved: (value) => password = value),
                   SizedBox(height: 20),
-                  // Register button.
                   neumorphicButton(
                     onPressed: _register,
                     child: Center(

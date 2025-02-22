@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:place/route_transition.dart';
 import 'package:place/screen/login_screen.dart';
+
 
 class SplashScreen extends StatefulWidget {
   final ValueNotifier<bool> themeNotifier;
@@ -15,12 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(themeNotifier: widget.themeNotifier),
-        ),
-      );
+      Navigator.pushReplacement(context, createRoute(LoginScreen(themeNotifier: widget.themeNotifier)));
     });
   }
 

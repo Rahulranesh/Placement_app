@@ -12,7 +12,8 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await Supabase.initialize(
     url: 'https://fcjdpmcaifpooqgtrmom.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjamRwbWNhaWZwb29xZ3RybW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1Njk2OTUsImV4cCI6MjA1NDE0NTY5NX0.JEq6JAIJQgJyiV0AhdqrlHXeq35oT8_WTZCMsfDclsg',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjamRwbWNhaWZwb29xZ3RybW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1Njk2OTUsImV4cCI6MjA1NDE0NTY5NX0.JEq6JAIJQgJyiV0AhdqrlHXeq35oT8_WTZCMsfDclsg',
   );
   runApp(MyApp());
 }
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
               ),
               centerTitle: true,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(20)),
               ),
             ),
           ),
@@ -61,7 +63,8 @@ class MyApp extends StatelessWidget {
               ),
               centerTitle: true,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(20)),
               ),
             ),
           ),
@@ -86,13 +89,18 @@ class AuthWrapper extends StatelessWidget {
         }
         if (snapshot.hasData) {
           return FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance.collection('users').doc(snapshot.data!.uid).get(),
+            future: FirebaseFirestore.instance
+                .collection('users')
+                .doc(snapshot.data!.uid)
+                .get(),
             builder: (context, userSnapshot) {
               if (userSnapshot.connectionState == ConnectionState.waiting) {
-                return Scaffold(body: Center(child: CircularProgressIndicator()));
+                return Scaffold(
+                    body: Center(child: CircularProgressIndicator()));
               }
               if (userSnapshot.hasData && userSnapshot.data!.exists) {
-                final data = userSnapshot.data!.data() as Map<String, dynamic>;
+                final data =
+                    userSnapshot.data!.data() as Map<String, dynamic>;
                 if (data['role'] == 'Admin') {
                   return AdminHomeScreen(themeNotifier: themeNotifier);
                 } else {
@@ -108,4 +116,3 @@ class AuthWrapper extends StatelessWidget {
     );
   }
 }
-

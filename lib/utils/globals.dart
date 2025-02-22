@@ -1,4 +1,3 @@
-// globals.dart
 library globals;
 
 String currentDepartment = "";

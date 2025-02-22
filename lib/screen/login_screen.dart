@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:place/admin/admin_home_screen.dart';
+import 'package:place/route_transition.dart';
 import 'package:place/screen/register_screen.dart';
 import 'package:place/screen/student_home_screen.dart';
 import 'package:place/utils/neumorphic_widget.dart';
@@ -25,14 +26,13 @@ class _LoginScreenState extends State<LoginScreen> {
       if (success) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (context) => isAdmin
-                ? AdminHomeScreen(themeNotifier: widget.themeNotifier)
-                : StudentHomeScreen(themeNotifier: widget.themeNotifier),
-          ),
+          createRoute(isAdmin
+              ? AdminHomeScreen(themeNotifier: widget.themeNotifier)
+              : StudentHomeScreen(themeNotifier: widget.themeNotifier)),
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Login failed')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Login failed')));
       }
     }
   }
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   neumorphicButton(onPressed: _login, child: Center(child: Text('Login', style: TextStyle(fontSize: 18)))),
                   SizedBox(height: 15),
                   TextButton(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen())),
+                    onPressed: () => Navigator.push(context, createRoute(RegisterScreen())),
                     child: Text("Don't have an account? Register"),
                   ),
                 ],

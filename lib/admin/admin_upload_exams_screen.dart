@@ -1,11 +1,13 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:place/services/database_services.dart';
 import 'package:place/services/subabase_storage_service.dart';
+
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
-import 'package:file_picker/file_picker.dart';
+
 
 class AdminUploadExamsScreen extends StatefulWidget {
   final bool uploadOnly;
@@ -33,12 +35,15 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
         _isUploadingImage = true;
       });
       try {
-        // Upload using SupabaseStorageService. This method incorporates the current Firebase UID.
+        // Upload using SupabaseStorageService.
         String url = await SupabaseStorageService()
             .uploadFile(file, 'exams', extension: ".jpg");
         setState(() {
           examImageUrl = url;
         });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Image uploaded successfully"))
+        );
       } catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Image upload failed: $e")));
@@ -52,7 +57,6 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
   Future<void> _uploadExam() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      // Prepare exam data, including tracking the uploader’s Firebase UID.
       Map<String, dynamic> examData = {
         'title': title,
         'date': date,
@@ -100,11 +104,9 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
                     Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            examImageUrl == null
-                                ? "No exam image selected"
-                                : "Exam image uploaded",
-                          ),
+                          child: examImageUrl == null
+                              ? Text("No exam image selected")
+                              : Image.network(examImageUrl!, height: 100),
                         ),
                         _isUploadingImage
                             ? CircularProgressIndicator()
@@ -127,7 +129,7 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
         ),
       );
     } else {
-      // Otherwise, display the list of exams (retrieved from Firestore via DatabaseService).
+      // Listing exams if not in uploadOnly mode.
       return Scaffold(
         appBar: CustomAppBar(title: 'Exams'),
         body: FutureBuilder<List<Map<String, dynamic>>>(
@@ -136,8 +138,7 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
             if (snapshot.connectionState == ConnectionState.waiting)
               return Center(child: CircularProgressIndicator());
             if (snapshot.hasError)
-              return Center(
-                  child: Text('Error fetching exams: ${snapshot.error}'));
+              return Center(child: Text('Error fetching exams: ${snapshot.error}'));
             if (!snapshot.hasData || snapshot.data!.isEmpty)
               return Center(child: Text('No exams found.'));
             final exams = snapshot.data!;
@@ -155,9 +156,8 @@ class _AdminUploadExamsScreenState extends State<AdminUploadExamsScreen> {
                         ? IconButton(
                             icon: Icon(Icons.download),
                             onPressed: () {
-                              // Use url_launcher to open the public URL.
-                              // Example (uncomment when using url_launcher):
-                              // launchUrl(Uri.parse(exam['examImageUrl']));
+                              // Use download helper to open the image/document.
+                              // (Assume downloadAndOpenFile is defined)
                             },
                           )
                         : null,

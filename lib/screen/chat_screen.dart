@@ -23,24 +23,17 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _isLoading = false;
 
   // Replace with your Anthropic API key for Claude.
-  final String anthropicApiKey =
-      "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";
+  final String anthropicApiKey = "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";
 
-  /// Calls the Anthropic Claude API to get a response.
   Future<String> fetchAIResponse(String userMessage) async {
-    // Claude’s API endpoint.
     final url = Uri.parse("https://api.anthropic.com/v1/complete");
-
-    // Construct the prompt with the necessary context.
-    // The prompt format uses tokens "Human:" and "Assistant:".
     final String prompt =
         "Human: You are an educational assistant for a placement app. Answer only questions related to academics, placements, education, and career guidance.\n"
         "Human: $userMessage\n"
         "Assistant:";
 
-    // Set up the body of the request.
     final Map<String, dynamic> body = {
-      "model": "claude-v1", // or another Claude model if available
+      "model": "claude-v1",
       "prompt": prompt,
       "max_tokens_to_sample": 150,
       "temperature": 0.7,
@@ -51,7 +44,6 @@ class _ChatScreenState extends State<ChatScreen> {
       url,
       headers: {
         "Content-Type": "application/json",
-        // Anthropic uses the "x-api-key" header to authenticate.
         "x-api-key": anthropicApiKey,
       },
       body: jsonEncode(body),
@@ -59,7 +51,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      // Claude returns the completion in a field called "completion"
       String reply = data["completion"];
       return reply.trim();
     } else {
@@ -67,7 +58,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  /// Sends the user's message and fetches the AI response.
   void _sendMessage() async {
     final userInput = _controller.text;
     if (userInput.trim().isEmpty) return;
@@ -92,16 +82,13 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  /// Builds the UI for a single chat message bubble.
   Widget _buildMessage(ChatMessage message) {
-    final bubbleColor =
-        message.isUser ? Colors.blueAccent[100] : Colors.grey[300];
+    final bubbleColor = message.isUser ? Colors.blueAccent[100] : Colors.grey[300];
     final textColor = message.isUser ? Colors.white : Colors.black;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 20.0),
       child: Align(
-        alignment:
-            message.isUser ? Alignment.centerRight : Alignment.centerLeft,
+        alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
         child: NeumorphicContainer(
           color: bubbleColor,
           borderRadius: BorderRadius.circular(16),
@@ -116,25 +103,28 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final Color baseColor = Theme.of(context).scaffoldBackgroundColor;
-    return Scaffold(
-      backgroundColor: baseColor,
-      appBar: CustomAppBar(title: "Educational AI Chatbot"),
-      body: Column(
+    return Container(
+      // As a modal bottom sheet, no Scaffold/AppBar is used.
+      padding: EdgeInsets.only(top: 16, left: 8, right: 8, bottom: MediaQuery.of(context).viewInsets.bottom + 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
+          Text("Chat with AI", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          SizedBox(height: 10),
+          Container(
+            height: 300,
             child: ListView.builder(
               reverse: true,
               padding: const EdgeInsets.only(top: 10),
               itemCount: _messages.length,
               itemBuilder: (context, index) {
-                // Display the most recent message at the bottom.
                 final message = _messages[_messages.length - 1 - index];
                 return _buildMessage(message);
               },
             ),
           ),
           if (_isLoading)
-            const Padding(
+            Padding(
                 padding: EdgeInsets.all(8.0),
                 child: CircularProgressIndicator()),
           Padding(
@@ -148,9 +138,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     controller: _controller,
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 neumorphicButton(
-                    onPressed: _sendMessage, child: const Icon(Icons.send))
+                    onPressed: _sendMessage, child: Icon(Icons.send))
               ],
             ),
           ),

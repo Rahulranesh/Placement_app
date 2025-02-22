@@ -1,9 +1,8 @@
-// exams_screen.dart
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
 import 'package:place/utils/neumorphic_widget.dart';
 import 'package:place/utils/custom_appbar.dart';
-import 'package:place/utils/download_helper.dart'; // Import the download helper
+import 'package:place/utils/download_helper.dart';
 
 class ExamsScreen extends StatelessWidget {
   Future<List<Map<String, dynamic>>> _getExams() async {
@@ -20,8 +19,7 @@ class ExamsScreen extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(child: CircularProgressIndicator());
           if (snapshot.hasError)
-            return Center(
-                child: Text('Error fetching exams: ${snapshot.error}'));
+            return Center(child: Text('Error fetching exams: ${snapshot.error}'));
           if (!snapshot.hasData || snapshot.data!.isEmpty)
             return Center(child: Text('No exams found.'));
           final exams = snapshot.data!;
@@ -40,7 +38,7 @@ class ExamsScreen extends StatelessWidget {
                       ? IconButton(
                           icon: Icon(Icons.download),
                           onPressed: () {
-                            // Use the helper function to download and open the file.
+                            // Download helper to open file.
                             String fileName = examUrl.split('/').last;
                             downloadAndOpenFile(context, examUrl, fileName);
                           },

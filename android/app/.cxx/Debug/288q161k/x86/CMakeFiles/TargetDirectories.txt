@@ -1,0 +1,2 @@
+/home/ranesh/placement_app/Placement_app/android/app/.cxx/Debug/288q161k/x86/CMakeFiles/edit_cache.dir
+/home/ranesh/placement_app/Placement_app/android/app/.cxx/Debug/288q161k/x86/CMakeFiles/rebuild_cache.dir

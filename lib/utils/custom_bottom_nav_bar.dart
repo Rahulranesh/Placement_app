@@ -5,8 +5,7 @@ class CustomBottomNavBar extends StatelessWidget {
   final Function(int) onTap;
   final List<BottomNavigationBarItem> items;
 
-  CustomBottomNavBar(
-      {required this.currentIndex, required this.onTap, required this.items});
+  CustomBottomNavBar({required this.currentIndex, required this.onTap, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +15,8 @@ class CustomBottomNavBar extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
-          BoxShadow(
-              color: Colors.black12, offset: Offset(4, 4), blurRadius: 10),
-          BoxShadow(
-              color: Colors.white, offset: Offset(-4, -4), blurRadius: 10),
+          BoxShadow(color: Colors.black12, offset: Offset(4, 4), blurRadius: 10),
+          BoxShadow(color: Colors.white, offset: Offset(-4, -4), blurRadius: 10),
         ],
       ),
       child: ClipRRect(

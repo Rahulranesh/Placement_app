@@ -1,0 +1,1 @@
+/home/ranesh/placement_app/Placement_app/build/app/intermediates/cxx/Debug/288q161k/obj/x86_64

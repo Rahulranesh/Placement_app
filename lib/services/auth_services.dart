@@ -22,7 +22,6 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: username, password: password);
       if (result.user != null) {
-        // Save the user in the global "users" collection.
         await _firestore.collection("users").doc(result.user!.uid).set({
           "name": name,
           "department": department,
@@ -30,9 +29,6 @@ class AuthService {
           "role": isAdmin ? "Admin" : "Student",
           "createdAt": FieldValue.serverTimestamp(),
         });
-
-        // For students only, add the user to the "students" subcollection
-        // under the corresponding department document.
         if (!isAdmin) {
           await _firestore
               .collection("departments")

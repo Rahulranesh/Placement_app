@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:place/route_transition.dart';
 import 'package:place/screen/staffs_screen.dart';
 import 'package:place/screen/exams_screen.dart';
 import 'package:place/screen/qnpapers_screen.dart';
 import 'package:place/screen/placement_preparation_screen.dart';
-import 'package:place/screen/campus_map.dart';
 import 'package:place/screen/profile_screen.dart';
 import 'package:place/screen/progress_screen.dart';
 import 'package:place/screen/login_screen.dart';
@@ -11,6 +11,7 @@ import 'package:place/services/auth_services.dart';
 import 'package:place/utils/custom_appbar.dart';
 import 'package:place/utils/custom_bottom_nav_bar.dart';
 import 'package:place/utils/neumorphic_widget.dart';
+
 
 class StudentHomeScreen extends StatefulWidget {
   final ValueNotifier<bool> themeNotifier;
@@ -39,9 +40,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     await AuthService().logout();
     Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-            builder: (context) =>
-                LoginScreen(themeNotifier: widget.themeNotifier)));
+        createRoute(LoginScreen(themeNotifier: widget.themeNotifier)));
   }
 
   @override
@@ -55,20 +54,16 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
             DrawerHeader(
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
-                borderRadius:
-                    BorderRadius.only(bottomRight: Radius.circular(20)),
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(20)),
               ),
-              child: Center(
-                  child: Text('Welcome!',
-                      style: TextStyle(color: Colors.white, fontSize: 24))),
+              child: Center(child: Text('Welcome!', style: TextStyle(color: Colors.white, fontSize: 24))),
             ),
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Profile'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()));
+                Navigator.push(context, createRoute(ProfileScreen()));
               },
             ),
             ListTile(
@@ -76,8 +71,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
               title: Text('Track Progress'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProgressScreen()));
+                Navigator.push(context, createRoute(ProgressScreen()));
               },
             ),
             SwitchListTile(
@@ -104,9 +98,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Staffs'),
           BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Exams'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Q/N Papers'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.school), label: 'Placement Prep'),
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Campus Map'),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Placement Prep'),
         ],
       ),
     );

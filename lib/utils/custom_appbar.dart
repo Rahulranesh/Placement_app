@@ -42,6 +42,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 String notifMessage = messageController.text.trim();
                 if (notifTitle.isNotEmpty && notifMessage.isNotEmpty) {
                   try {
+                    // Replace "students" with your target topic.
                     await NotificationService().sendNotificationToTopic("students", notifTitle, notifMessage);
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -64,14 +65,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   
   @override
   Widget build(BuildContext context) {
-    List<Widget> actionsList = [
+    List<Widget> actionsList = [];
+    // Chat icon now opens as a modal bottom sheet.
+    actionsList.add(
       IconButton(
         icon: Icon(Icons.chat),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen()));
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (_) => ChatScreen(),
+          );
         },
       ),
-    ];
+    );
     
     if (showNotificationButton) {
       actionsList.add(
@@ -95,3 +102,4 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
+  

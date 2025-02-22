@@ -1,4 +1,3 @@
-// placement_preparation_screen.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:place/services/database_services.dart';
@@ -13,8 +12,7 @@ class PlacementPreparationScreen extends StatefulWidget {
       _PlacementPreparationScreenState();
 }
 
-class _PlacementPreparationScreenState
-    extends State<PlacementPreparationScreen> {
+class _PlacementPreparationScreenState extends State<PlacementPreparationScreen> {
   late Future<List<Map<String, dynamic>>> _materialsFuture;
 
   @override
@@ -33,9 +31,7 @@ class _PlacementPreparationScreenState
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(child: CircularProgressIndicator());
           if (snapshot.hasError)
-            return Center(
-                child: Text(
-                    'Error fetching placement materials: ${snapshot.error}'));
+            return Center(child: Text('Error fetching placement materials: ${snapshot.error}'));
           if (!snapshot.hasData || snapshot.data!.isEmpty)
             return Center(child: Text('No placement materials found.'));
 
@@ -53,10 +49,8 @@ class _PlacementPreparationScreenState
               var material = materials[index];
               String id = material['id'];
               bool isCompleted = globals.placementCompletion[id] ?? false;
-              String fileUrl =
-                  material['fileUrl'] ?? ''; // URL from the database
-              String fileName =
-                  fileUrl.isNotEmpty ? fileUrl.split('/').last : '';
+              String fileUrl = material['fileUrl'] ?? '';
+              String fileName = fileUrl.isNotEmpty ? fileUrl.split('/').last : '';
 
               return NeumorphicContainer(
                 padding: EdgeInsets.all(16),

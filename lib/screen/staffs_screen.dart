@@ -14,8 +14,7 @@ class StaffsScreen extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(child: CircularProgressIndicator());
           if (snapshot.hasError)
-            return Center(
-                child: Text('Error fetching staff data: ${snapshot.error}'));
+            return Center(child: Text('Error fetching staff data: ${snapshot.error}'));
           if (!snapshot.hasData || snapshot.data!.isEmpty)
             return Center(child: Text('No staff found.'));
           final staffs = snapshot.data!;
@@ -28,12 +27,10 @@ class StaffsScreen extends StatelessWidget {
                 padding: EdgeInsets.all(16),
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: (staff['profileImageUrl'] != null &&
-                            staff['profileImageUrl'].toString().isNotEmpty)
+                    backgroundImage: (staff['profileImageUrl'] != null && staff['profileImageUrl'].toString().isNotEmpty)
                         ? NetworkImage(staff['profileImageUrl'])
                         : null,
-                    child: (staff['profileImageUrl'] == null ||
-                            staff['profileImageUrl'].toString().isEmpty)
+                    child: (staff['profileImageUrl'] == null || staff['profileImageUrl'].toString().isEmpty)
                         ? Icon(Icons.person)
                         : null,
                   ),
